@@ -1,6 +1,6 @@
 import os
 import cv2
-from utils import yolo_utils, image_utils, main_utils
+from util import yolo_utils, image_utils, main_utils
 
 COCO_NAMES = r"./yolo-coco/coco.names"
 CFG_PATH = r"./yolo-coco/yolov3/yolov3.cfg"

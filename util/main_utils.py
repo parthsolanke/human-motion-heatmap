@@ -2,8 +2,8 @@ from tqdm import tqdm
 import cv2
 import numpy as np
 import time
-from utils.yolo_utils import detect_humans
-from utils.image_utils import resize_frame, apply_background_subtraction, process_accumulated_heatmap, display_fps_text
+from util.yolo_utils import detect_humans
+from util.image_utils import resize_frame, apply_background_subtraction, process_accumulated_heatmap, display_fps_text
 
 
 def process_frames(cap, fgbg, yolo_net, yolo_classes, yolo_layer_names, display_fps=False, resize_factor=0.5, skip_frames=2, yolo_skip_frames=3):

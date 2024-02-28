@@ -11,7 +11,7 @@ model = yolov9.load(
 # set model parameters
 model.conf = 0.25  # NMS confidence threshold
 model.iou = 0.45  # NMS IoU threshold
-model.classes = 0  # 0: class id for person
+model.classes = None  # (optional list) filter by class
 
 video_path = "./data/input.mp4"
 cap = cv2.VideoCapture(video_path)

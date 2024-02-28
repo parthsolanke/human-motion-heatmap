@@ -13,3 +13,4 @@ torch>=1.7.0
 torchvision>=0.8.1
 tqdm>=4.64.0
 protobuf<=3.20.1
+yolov9pip==0.0.4
