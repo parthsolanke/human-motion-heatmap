@@ -22,7 +22,7 @@ def main():
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    image_utils.save_image(output_folder, result_overlay, empty_output_dir=False)
+    image_utils.save_image(output_folder, result_overlay, empty_output_dir=True)
 
     cv2.imshow('Final Heatmap Overlay Output', result_overlay)
     print(f"Final overlay image saved at: {os.path.join(output_folder, 'heatmap_overlay.jpg')}")
