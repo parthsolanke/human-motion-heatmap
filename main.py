@@ -3,8 +3,8 @@ import cv2
 from utils import yolo_utils, image_utils, main_utils
 
 COCO_NAMES = r"./yolo-coco/coco.names"
-CFG_PATH = r"./yolo-coco/yolov3.cfg"
-WEIGHTS_PATH = r"./yolo-coco/yolov3.weights"
+CFG_PATH = r"./yolo-coco/yolov3/yolov3.cfg"
+WEIGHTS_PATH = r"./yolo-coco/yolov3/yolov3.weights"
 VIDEO_PATH = r"./data/input.mp4"
 
 def main():
@@ -22,7 +22,7 @@ def main():
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
-    image_utils.save_image(output_folder, result_overlay, empty_output_dir=True)
+    image_utils.save_image(output_folder, result_overlay, empty_output_dir=False)
 
     cv2.imshow('Final Heatmap Overlay Output', result_overlay)
     print(f"Final overlay image saved at: {os.path.join(output_folder, 'heatmap_overlay.jpg')}")
