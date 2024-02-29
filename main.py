@@ -1,47 +1,33 @@
-import yolov9
+import os
 import cv2
-import numpy as np
+from util import image_utils, main_utils, yolov9_utils
 
-# load pretrained or custom model
-model = yolov9.load(
-    "./yolo-coco/yolov9/gelan-c.pt",
-    device="cpu",
-)
+WEIGHTS_PATH = r"./yolo-coco/yolov9/gelan-c.pt"
+VIDEO_PATH = r"./data/input.mp4"
 
-# set model parameters
-model.conf = 0.25  # NMS confidence threshold
-model.iou = 0.45  # NMS IoU threshold
-model.classes = 0  # 0: class id for person
+def main():
+    video_path = VIDEO_PATH
+    cap = image_utils.initialize_video_capture(video_path)
+    fgbg = cv2.createBackgroundSubtractorMOG2()
 
-video_path = "./data/inp.mp4"
-cap = cv2.VideoCapture(video_path)
-if not cap.isOpened():
-    print("Error opening video file")
-    exit()
+    # Initialize YOLO V9 for human detection
+    model = yolov9_utils.initialize_yolov9(WEIGHTS_PATH, iou_conf=0.25, iou_thresh=0.45, class_id=0)
 
-while cap.isOpened():
-    
-    ret, frame = cap.read()
-    if not ret:
-        break
-    frame = cv2.resize(frame, None, fx=0.5, fy=0.5)
+    first_frame, accum_image = main_utils.process_frames_yolov9(cap, fgbg, yolo_model=model, display_fps=True, skip_frames=1, yolo_skip_frames=5)
+    result_overlay = main_utils.generate_overlay(first_frame, accum_image)
 
-    # perform inference on frame
-    results = model(frame)
+    output_folder = './output'
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
 
-    # parse results
-    predictions = results.pred[0]
-    boxes = predictions[:, :4]  # x1, y1, x2, y2s
+    image_utils.save_image(output_folder, result_overlay, empty_output_dir=True)
 
-    # draw bounding boxes on frame
-    for box in boxes:
-        x1, y1, x2, y2 = np.array(box, dtype=int)
-        cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 165, 255), 1, cv2.LINE_AA)
-          
-    # display frame
-    cv2.imshow("Frame", frame)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+    cv2.imshow('Final Heatmap Overlay Output', result_overlay)
+    print(f"Final overlay image saved at: {os.path.join(output_folder, 'heatmap_overlay.jpg')}")
 
-cap.release()
-cv2.destroyAllWindows()
+    cap.release()
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
