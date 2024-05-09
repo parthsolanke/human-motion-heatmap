@@ -1,1 +1,1 @@
-# Project-Human-Motion-Heatmap
+# Human Motion Heatmap
